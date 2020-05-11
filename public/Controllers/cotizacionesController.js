@@ -27,7 +27,7 @@ module.exports = {
             return res.send(callback);
         })
     }
-    ,getCotizacionesV2 :    (req,res,next)=>{
+    ,getCotizacionesV2 : async    (req,res,next)=>{
         console.log('get cotizaciones ...')
         let ETHARS = [] ;  let ETHEUR = [] ;  let ETHUSD = [] ;
         let BTCARS = [] ;  let BTCEUR = [] ;  let BTCUSD = [] ;
