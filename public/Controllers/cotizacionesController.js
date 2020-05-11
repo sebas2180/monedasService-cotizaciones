@@ -4,9 +4,9 @@ const cotizacionesService = require('../services/cotizacionesService');
 
 module.exports = {
     getCotizaciones : (req,res,next)=>{
-        console.log('get cotizaciones V1');
+        console.log(' .... get cotizaciones V1');
         cotizacionesService.getCotizaciones((callback)=>{
-            //console.log(callback['cotizaciones'])
+           console.log('COTIZACION enviado ....')
             return res.send(callback);
         });
     },
