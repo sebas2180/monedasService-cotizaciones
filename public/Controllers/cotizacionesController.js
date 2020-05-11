@@ -19,6 +19,7 @@ module.exports = {
         }
        
         CotizacionService.getCotizacion(cotizacion,(callback)=>{
+            console.log('COTIZACION enviada .....')
             return res.send(callback);
         });
     },
