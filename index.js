@@ -56,7 +56,8 @@ app.all('*', function(req, res, next) {
 // const  transaccionRoute= require('./public/rutas/transaccionRoute')(app,passport);
 // const  usuarioRoute= require('./public/rutas/usuarioRoute')(app,passport);
  const  cotizacionesroute= require('./public/rutas/cotizacionesRoutes')(app);
- require('./public/cotizaciones');
+ const a = require('./public/cotizaciones');
+ a.cotizaciones();
  //require('./database/sequelize');
 
  

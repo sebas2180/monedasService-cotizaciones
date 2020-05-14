@@ -9,6 +9,7 @@ connection = mysql.dbConnection();
 module.exports = {
 
    cotizaciones:  ()=>{
+       console.log('Ejecutando cotizaciones ..')
     cron.schedule('*/10 * * * * *', () => {
         //console.log('running a task every minute');
         request('https://api.bit2me.com/v1/ticker2', { json: true }, (err, res, body) => {
@@ -187,9 +188,9 @@ module.exports = {
                     });  
                 });  
                
-          });    
+        });    
           
-          request('https://criptoya.com/exchanges/Sesocio.php?coin=ETH&fiat=ARS&vol=5', { json: true }, (err, res, body) => {
+        request('https://criptoya.com/exchanges/Sesocio.php?coin=ETH&fiat=ARS&vol=5', { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }    
                 var cotizacion = new cotizaciones;
                 cotizacion.proveedor='Sesocio';
@@ -207,8 +208,8 @@ module.exports = {
                 });  
                   
         
-          }); 
-          request('https://criptoya.com/exchanges/Sesocio.php?coin=BTC&fiat=ARS&vol=0.1', { json: true }, (err, res, body) => {
+        }); 
+        request('https://criptoya.com/exchanges/Sesocio.php?coin=BTC&fiat=ARS&vol=0.1', { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }    
                 var cotizacion = new cotizaciones;
                 cotizacion.proveedor='Sesocio';
@@ -225,8 +226,8 @@ module.exports = {
                     }); 
                 });  
         
-          }); 
-          request('https://criptoya.com/exchanges/CryptoMkt.php?coin=ETH&fiat=ARS&vol=5', { json: true }, (err, res, body) => {
+        }); 
+        request('https://criptoya.com/exchanges/CryptoMkt.php?coin=ETH&fiat=ARS&vol=5', { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }    
                 var cotizacion = new cotizaciones;
                 cotizacion.proveedor='Cryptomkt';
@@ -251,8 +252,8 @@ module.exports = {
                     }); 
                 });  
                 
-          }); 
-          request('https://criptoya.com/exchanges/Decrypto.php?coin=BTC&fiat=ARS&vol=0.1', { json: true }, (err, res, body) => {
+        }); 
+        request('https://criptoya.com/exchanges/Decrypto.php?coin=BTC&fiat=ARS&vol=0.1', { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }    
                 var cotizacion = new cotizaciones;
                 cotizacion.proveedor='Cryptomkt';
@@ -269,15 +270,16 @@ module.exports = {
                     }); 
                 });  
  
-          });    
+        });    
         request('http://preev.com/pulse/units:btc+usd/sources:bitstamp+kraken', { json: true }, (err, res, body) => {
         if (err) { return console.log(err); }    
                 var cotizacion = new cotizaciones;
                 cotizacion.proveedor='Bitstamp';
                 cotizacion.symbol= 'BTC';
                 cotizacion.base= 'USD';
-                cotizacion.venta= body['btc']['usd']['bitstamp']['last'];
-                cotizacion.compra= body['btc']['usd']['bitstamp']['last'];
+                var c = parseFloat(body['btc']['usd']['bitstamp']['last']);
+                cotizacion.venta= parseFloat(c - (c*(0.0024)));
+                cotizacion.compra=parseFloat(c - (c*(0.0024)));
                 cotizacion.name='Bitcoin';
                 obtener_valor('BTC','Bitstamp','USD', body['btc']['usd']['bitstamp']['last'],(cb)=>{
                     cotizacion.variacionDia = cb ;
@@ -327,7 +329,7 @@ module.exports = {
                     }); 
                 });  
             }); 
-                request('https://criptoya.com/exchanges/SatoshiTango.php?coin=ETH&fiat=ARS&vol=5', { json: true }, (err, res, body) => {
+        request('https://criptoya.com/exchanges/SatoshiTango.php?coin=ETH&fiat=ARS&vol=5', { json: true }, (err, res, body) => {
                     if (err) { return console.log(err); }    
                         var cotizacion = new cotizaciones;
                         cotizacion.proveedor='Satoshitango';
@@ -343,70 +345,34 @@ module.exports = {
                                 cotizacion.save();  
                             }); 
                         });  
-                    }); 
-        // request.get({url: 'https://api.satoshitango.com/v3/ticker/ARS', jar: j}, function(err, httpResponse, html) {
-        //     try{
-        //         const aux = JSON.parse(httpResponse['body']);
-        //        // console.log(aux );
-        //         const monedaRipio =( aux['data']);
-        //        //console.log(monedaRipio );
-        //        const aux2 = monedaRipio.ticker;
-        //       //console.log(aux2);
-        //        const aux3 = aux2.BTC;
-        //       // console.log(aux3);
-        //         const monedaRipioBTC = aux2.BTC;
-        //         var cotizacionBTC = new cotizaciones;
-        //         cotizacionBTC.proveedor='Satoshitango';
-        //         cotizacionBTC.symbol= 'BTC';
-        //         cotizacionBTC.base= 'ARS';
-        //         cotizacionBTC.compra=monedaRipioBTC['ask'];
-        //         cotizacionBTC.venta= monedaRipioBTC['bid'];
-        //         cotizacionBTC.name='Bitcoin';
-        //         obtener_valor('BTC','Satoshitango','ARS',monedaRipioBTC['ask'],(cb)=>{
-        //             cotizacionBTC.variacionDia = cb ;
-        //             obtener_valor_hora('BTC','Satoshitango','ARS',monedaRipioBTC['ask'],(cbHora)=>{
-        //                 cotizacionBTC.variacionHora = cbHora ;
-        //                 cotizacionBTC.save();  
-        //             });  
-        //         });  
+        }); 
 
-        //         const monedaRipioETH = aux2.ETH;
-        //         var cotizacionETH = new cotizaciones;
-        //         cotizacionETH.proveedor='Satoshitango';
-        //         cotizacionETH.symbol= 'ETH';
-        //         cotizacionETH.base= 'ARS';
-        //         cotizacionETH.compra= monedaRipioETH['ask'];
-        //         cotizacionETH.venta= monedaRipioETH['bid'];
-        //         cotizacionETH.name='Litecoin';
-        //         obtener_valor('ETH','Satoshitango','ARS', monedaRipioETH['ask'],(cb)=>{
-        //             cotizacionETH.variacionDia = cb ;
-        //             obtener_valor_hora('ETH','Satoshitango','ARS', monedaRipioETH['ask'],(cbHora)=>{
-        //                 cotizacionETH.variacionHora = cbHora ;
-        //                 cotizacionETH.save();  
-        //             }); 
-        //         });  
-        
-        //         const monedaRipioLTC = aux2.LTC;
-        //         var cotizacionLTC = new cotizaciones;
-        //         cotizacionLTC.proveedor='Satoshitango';
-        //         cotizacionLTC.symbol= 'LTC';
-        //         cotizacionLTC.base= 'ARS';
-        //         cotizacionLTC.compra= monedaRipioLTC['ask'];
-        //         cotizacionLTC.venta= monedaRipioLTC['bid'];
-        //         cotizacionLTC.name='Litecoin';
-        //         obtener_valor('LTC','Satoshitango','ARS', monedaRipioLTC['ask'],(cb)=>{
-        //             cotizacionLTC.variacionDia = cb ;
-        //             obtener_valor_hora('LTC','Satoshitango','ARS', monedaRipioLTC['ask'],(cbHora)=>{
-        //                 cotizacionLTC.variacionHora = cbHora ;
-        //                 cotizacionLTC.save();  
-        //             });  
-        //         });  
+                    // var cotizacionKLPeso = new cotizaciones;
+                    // cotizacionKLPeso.proveedor='Kuanliandp';
+                    // cotizacionKLPeso.symbol= 'KL' ;
+                    // cotizacionKLPeso.base= 'ARS';
+                    // cotizacionKLPeso.venta=  parseFloat(132*80);
+                    // cotizacionKLPeso.compra= parseFloat(132*80);
+                    // cotizacionKLPeso.name='Kuanliandp';
+                    // cotizacionKLPeso.save();
 
-        //     } catch(err) {
-        //         console.log('error en satoshitango');
-        //     }
-        // });
+                    // var cotizacionKLEuro = new cotizaciones;
+                    // cotizacionKLEuro.proveedor='Kuanliandp';
+                    // cotizacionKLEuro.symbol= 'KL' ;
+                    // cotizacionKLEuro.base= 'EUR';
+                    // cotizacionKLEuro.venta=  parseFloat(1,085*80);
+                    // cotizacionKLEuro.compra= parseFloat(1,085*80);
+                    // cotizacionKLEuro.name='Kuanliandp';
+                    // cotizacionKLEuro.save();
 
+                    // var cotizacionKLUSD = new cotizaciones;
+                    // cotizacionKLUSD.proveedor='Kuanliandp';
+                    // cotizacionKLUSD.symbol= 'KL' ;
+                    // cotizacionKLUSD.base= 'USD';
+                    // cotizacionKLUSD.venta=  parseFloat(80);
+                    // cotizacionKLUSD.compra= parseFloat(80);
+                    // cotizacionKLUSD.name='Kuanliandp';
+                    // cotizacionKLUSD.save();
 
       });
    }
